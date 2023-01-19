@@ -84,7 +84,6 @@ async function getQuotationID() {
         let token = await GetToken();
         await sql.connect(config);
         const data = await sql.query(`select [QO Number] as qt_no from vw_speedy_quotation_api_search`);
-        console.log("data",data)
         let arr_q = data.recordset || [];
         for (let i = 0; i < arr_q.length; i++) {
             await getQuotationBOQ(arr_q[i]['qt_no'], token);
