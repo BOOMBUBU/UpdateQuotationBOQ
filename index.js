@@ -1,6 +1,9 @@
 var axios = require('axios')
 const sql = require('mssql')
 const moment = require('moment')
+var httpsProxyAgent = require("https-proxy-agent");
+var db = require("../db.json");
+var agent = new httpsProxyAgent(db["scg_proxy"]);
 var fs = require('fs')
 const config = {
     user: "apidev",
@@ -29,6 +32,7 @@ async function GetToken() {
         headers: {
             'Content-Type': 'application/json',
         },
+        httpsAgent: agent,
         data: data,
     }).then((x) => {
         return x['data']
@@ -51,6 +55,7 @@ async function getQuotationBOQ(QuotationNumber) {
             'Content-Type': 'application/json',
             'Authorization': token,
         },
+        httpsAgent: agent,
     }).then(async (x) => {
         await SaveData(x['data']);
     }).catch(async function (error) {
